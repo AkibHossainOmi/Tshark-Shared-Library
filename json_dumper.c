@@ -11,8 +11,6 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
-#include "shared_data.h" //Md. Akib Hossain Omi
-#include "wiretap/wtap.h" //Md. Akib Hossain Omi
 #include <glib.h>
 
 #include "json_dumper.h"
@@ -65,15 +63,34 @@ enum json_dumper_change {
 };
 
 // Md. Akib Hossain Omi
-long long int Lens = 0, flag=0;
-char *large_strings;
+long long int Lens, flag = 0;
+char* large_strings;
+char* Tb_Return(int f) //1 is the only right parameter
+{
+    if (f == 1) return large_strings;
+    else return "Wrong Parameter\n";
+    return "Wrong Parameter\n";
+}
+
 /* JSON Dumper putc */
 static void
-jd_putc(const json_dumper *dumper, char c)
+jd_putc(const json_dumper* dumper, char c)
 {
+    if (flag == 0)
+    {
+        size_t size_in_mb = 500;
+        size_t size_in_bytes = size_in_mb * 1024 * 1024;
+        large_strings = (char*)malloc(size_in_bytes);
+        if (large_strings == NULL) {
+            fprintf(stderr, "Failed to allocate memory for the string.\n");
+        }
+        flag = 1;
+        Lens = 0;
+    }
     if (dumper->output_file) {
-        *(large_strings+Lens) = c;
+        *(large_strings + Lens) = c;
         Lens++;
+        if(c==']') *(large_strings + Lens) = '\0', Lens++;
         // fputc(c, dumper->output_file);
     }
 
@@ -85,10 +102,10 @@ jd_putc(const json_dumper *dumper, char c)
 // Md. Akib Hossain Omi
 /* JSON Dumper puts */
 static void
-jd_puts(const json_dumper *dumper, const char *s)
+jd_puts(const json_dumper* dumper, const char* s)
 {
     if (dumper->output_file) {
-        for(size_t sz=0; sz<strlen(s); sz++) *(large_strings+Lens) = s[sz], Lens++;
+        for (size_t sz = 0; sz < strlen(s); sz++) *(large_strings + Lens) = s[sz], Lens++;
         // fputs(s, dumper->output_file);
     }
 
@@ -96,6 +113,7 @@ jd_puts(const json_dumper *dumper, const char *s)
         g_string_append(dumper->output_string, s);
     }
 }
+
 
 static void
 jd_puts_len(const json_dumper *dumper, const char *s, size_t len)
@@ -696,4 +714,3 @@ json_dumper_end_base64(json_dumper *dumper)
 {
     json_dumper_end_nested_element(dumper, JSON_DUMPER_TYPE_BASE64);
 }
-
