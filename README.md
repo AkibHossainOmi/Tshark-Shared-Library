@@ -25,10 +25,10 @@ msbuild /m /p:Configuration=RelWithDebInfo Wireshark.sln
 * Change the source code of wireshark by following command
 ```
 cp -r CMakeLists.txt wireshark/CMakeLists.txt
-cp -r tshark.c wireshark\tshark.c
-cp -r tshark.h wireshark\wsutil\tshark.h
-cp -r json_dumper.c wireshark\wsutil\json_dumper.c
-cp -r json_dumper.h wireshark\wsutil\json_dumper.h
+cp -r tshark.c wireshark/tshark.c
+cp -r tshark.h wireshark/wsutil/tshark.h
+cp -r json_dumper.c wireshark/wsutil/json_dumper.c
+cp -r json_dumper.h wireshark/wsutil/json_dumper.h
 ```
 
 * Build wireshark solution again from Build directory
