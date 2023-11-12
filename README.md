@@ -38,7 +38,7 @@ make -j`nproc` && {
   echo "\nBuild Success!"
   echo "You can find libtshark.so"
   echo "at \"`pwd`/run\""
-  echo "Use the char* tb_main(int argc, char *argv[]) function to have the tshark functionalities"
+  echo "Use the char* Tb_Main(int argc, char *argv[]) function to have the tshark functionalities"
   echo "Use void freememory(char* str) function to free the allocated memory"
 }
 ```
