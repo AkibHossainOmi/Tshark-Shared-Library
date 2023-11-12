@@ -913,6 +913,7 @@ capture_opts_get_interface_list(int* err, char** err_str)
     return capture_interface_list(err, err_str, NULL);
 }
 #endif
+volatile int         exit_status;
 void freememory(char* str)
 {
     free(str);
@@ -968,7 +969,7 @@ Tb_Main(int argc, char* argv[])
     gboolean             exp_pdu_status;
     volatile process_file_status_t status;
     volatile gboolean    draw_taps = FALSE;
-    volatile int         exit_status = EXIT_SUCCESS;
+    exit_status = EXIT_SUCCESS;
 #ifdef HAVE_LIBPCAP
     int                  caps_queries = 0;
     GList* if_list;
@@ -2771,7 +2772,7 @@ main(int argc, char* argv[])
 {
     char* result = Tb_Main(argc, argv);
     free(result);
-    return 0;
+    return exit_status;
 }
 gboolean loop_running = FALSE;
 guint32 packet_count = 0;
